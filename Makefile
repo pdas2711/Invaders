@@ -1,6 +1,6 @@
 
 main: main.cpp src/*.hpp
-	g++ main.cpp -lncurses -o main
+	g++ -o main main.cpp -lncurses -g
 
 clean:
 	rm -f main *.o
