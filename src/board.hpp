@@ -68,10 +68,10 @@ class Board {
 		void setTimeout(int timeout) {
 			wtimeout(board_window, timeout);
 		}
-		void getEmptyCoordinates(int& x) {
+		void getEmptyCoordinates(int& x, int hitBoxWidth) {
 			do {
 				x = rand() % width;
-			} while((mvwinch(board_window, 1, x)) != ' ');
+			} while(((mvwinch(board_window, 1, x)) != ' ') && (mvwinch(board_window, 1, x + hitBoxWidth) < width));
 		}
 
 	private:

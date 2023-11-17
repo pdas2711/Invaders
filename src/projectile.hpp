@@ -30,9 +30,9 @@ class Projectile : public DrawableSet {
 	private:
 		int boardHeight;
 		void clockAction() {
-			if (identity == playerId)
+			if (identity == projectileId_player)
 				y -= 1;
-			else if (identity == enemyId)
+			else if (identity == projectileId_enemy)
 				y += 1;
 		}
 };

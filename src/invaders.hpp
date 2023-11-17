@@ -1,9 +1,11 @@
 #pragma once
 #include <ncurses.h>
+#include <stdlib.h>
 #include "board.hpp"
 #include "scoreboard.hpp"
 #include "healthboard.hpp"
 #include "player.hpp"
+#include "enemy.hpp"
 #include "entityset.hpp"
 #include "projectile.hpp"
 
@@ -13,12 +15,9 @@ class Invaders {
 	Healthboard healthboard;
 	bool game_over;
 	int score;
-	int health;
 	Player* player;
 	EntitySet entity_set;
-	EntitySet all_projectiles;
-	EntitySet all_enemies;
-
+	
 	public:
 		Invaders(int dimension) {
 			int height = dimension;
@@ -35,10 +34,9 @@ class Invaders {
 
 		void initialize(int dimension) {
 			score = 0;
-			health = 20;
 			board.initialize();
 			scoreboard.initialize(score);
-			healthboard.initialize(health);
+			healthboard.initialize(20);
 			player = new Player(dimension + 6, dimension - 5, board.getWidth());
 			entity_set.addEntity(player);
 			game_over = false;
@@ -58,9 +56,8 @@ class Invaders {
 				case KEY_UP:
 				case 'w':
 				case ' ': {
-					Projectile* player_attack = new Projectile(player->getX() + 3, player->getY() - 1, board.getHeight(), Identifier::playerId);
-					entity_set.addEntity(player_attack);
-					all_projectiles.addEntity(player_attack);
+					Projectile* player_attack = new Projectile(player->getX() + 3, player->getY() - 1, board.getHeight(), Identifier::projectileId_player);
+					entity_set.addEntity(player_attack);	
 				}
 					break;
 				case 'p':
@@ -70,7 +67,7 @@ class Invaders {
 		}
 
 		void updateState() {
-			if (health <= 0)
+			if (healthboard.getHealth() <= 0)
 				game_over = true;
 			spawnEnemy();
 			std::vector<DrawableSet*>* entities = entity_set.getAllEntities();
@@ -78,7 +75,9 @@ class Invaders {
 				if ((*entities)[i] == nullptr)
 					entities->erase(entities->begin() + i);
 				(*entities)[i]->incrementClock();
-				if (((*entities)[i]->getY() == 0) || ((*entities)[i]->getY() == board.getHeight())) {
+				if (!(*entities)[i]->isInBounds(board.getWidth(), board.getHeight())) {
+					if ((*entities)[i]->getIdentity() == enemyId)
+						healthboard.decrementHealth(1);
 					delete (*entities)[i];
 					entities->erase(entities->begin() + i);  // The erase() function only accepts an iterator
 				}
@@ -86,17 +85,21 @@ class Invaders {
 					int projX = (*entities)[i]->getX();
 					int projY = (*entities)[i]->getY();
 					if (player->isInHitbox(projX, projY))
-						health = health - 1;
+						healthboard.decrementHealth(1);
 				}
 				if ((*entities)[i]->getIdentity() == projectileId_player) {
 					int projX = (*entities)[i]->getX();
 					int projY = (*entities)[i]->getY();
-					for (int j = 0; i < entity_set.getSize(); j++)
+					for (int j = 0; j < entity_set.getSize(); j++) {
 						if (((*entities)[j]->getIdentity() == enemyId) && ((*entities)[j]->isInHitbox(projX, projY))) {
+							delete (*entities)[i];
 							delete (*entities)[j];
+							entities->erase(entities->begin() + i);
 							entities->erase(entities->begin() + j);
 							score = score + 1;
+							scoreboard.updateScore(score);
 						}
+					}
 				}
 			}
 		}
@@ -104,6 +107,7 @@ class Invaders {
 		void redraw() {
 			board.refresh();
 			scoreboard.refresh();
+			healthboard.refresh();
 		}
 
 		bool isOver() {
@@ -114,5 +118,17 @@ class Invaders {
 			return score;
 		}
 		void spawnEnemy() {
+			if (rand() % 80 == 1) {
+				int enemyX;
+				board.getEmptyCoordinates(enemyX, board.getWidth());
+				Enemy* new_enemy = new Enemy(enemyX, 1, board.getWidth());
+				entity_set.addEntity(new_enemy);
+			}
+		}
+
+		void debugPrint() {
+			score = score + 1;
+			scoreboard.updateScore(score);
+			redraw();
 		}
 };
