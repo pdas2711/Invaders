@@ -1,5 +1,6 @@
 #pragma once
 #include "drawableset.hpp"
+#include "projectile.hpp"
 
 /* The player icon set design:
 
@@ -12,15 +13,15 @@
 class Player : public DrawableSet {
 	public:
 		Player() {
-			this->x = 0;
-			this->y = 0;
-			this->boardWidth = 0;
-			this->icon_set = {
+			x = 0;
+			y = 0;
+			boardWidth = 0;
+			icon_set = {
 				{' ', ' ', ' ', '^', ' ', ' ', ' '},
 				{'|', '-', '-', '|', '-', '-', '|'},
 				{'|', ' ', ' ', ' ', ' ', ' ', '|'}
 			};
-			this->speed = 0;
+			speed = 0.111;
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
 		}
@@ -29,12 +30,12 @@ class Player : public DrawableSet {
 			this->x = x;
 			this->y = y;
 			this->boardWidth = boardWidth;
-			this->icon_set = {
+			icon_set = {
 				{' ', ' ', ' ', '^', ' ', ' ', ' '},
 				{'|', '-', '-', '|', '-', '-', '|'},
 				{'|', ' ', ' ', ' ', ' ', ' ', '|'}
 			};
-			this->speed = 0;
+			speed = 0.111;
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
 		}
@@ -54,4 +55,5 @@ class Player : public DrawableSet {
 		}
 	private:
 		int boardWidth;
+		void clockAction() {}
 };

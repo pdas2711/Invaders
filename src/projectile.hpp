@@ -4,26 +4,31 @@
 class Projectile : public DrawableSet {
 	public:
 		Projectile() {
-			this->x = 0;
-			this->y = 0;
-			this->boardWidth = 0;
-			this->icon_set = {
+			x = 0;
+			y = 0;
+			boardHeight = 0;
+			icon_set = {
 				{'X'}
 			};
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
+			speed = 0.40;
 		}
 
 		Projectile(int x, int y, int boardHeight) {
 			this->x = x;
 			this->y = y;
 			this->boardHeight = boardHeight;
-			this->icon_set = {
+			icon_set = {
 				{'X'}
 			};
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
-		}
+			speed = 0.40;
+		}	
 	private:
 		int boardHeight;
+		void clockAction() {
+			y = y - 1;
+		}
 };

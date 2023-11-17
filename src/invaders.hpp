@@ -44,6 +44,13 @@ class Invaders {
 				case 'd':
 					player->moveRight();
 					break;
+				case KEY_UP:
+				case 'w':
+				case ' ': {
+					Projectile* player_attack = new Projectile(player->getX() + 3, player->getY() - 1, board.getHeight());
+					entity_set.addEntity(player_attack);
+				}
+					break;
 				case 'p':
 					while (board.getInput() != 'p');
 					break;
@@ -51,10 +58,10 @@ class Invaders {
 		}
 
 		void updateState() {
-			// Spawn enemies
-			// Update enemy movements
-			// Update projectile movements
-			// Need board.getEntity()
+			std::vector<DrawableSet*>* entities = entity_set.getAllEntities();
+			for (int i = 0; i < entity_set.getSize(); i++) {
+				(*entities)[i]->incrementClock();
+			}
 		}
 
 		void redraw() {
