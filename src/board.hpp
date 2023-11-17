@@ -7,11 +7,11 @@
 class Board {
 	public:
 		Board() {
-			construct(0, 0, 100);
+			construct(0, 0, NULL, 100);
 		}
 
-		Board(int width, int height, int timeout = 10) {
-			construct(width, height, timeout);
+		Board(int width, int height, std::vector<DrawableSet*>* entity_set, int timeout = 10) {
+			construct(width, height, entity_set, timeout);
 		}
 
 		void initialize() {
@@ -23,21 +23,14 @@ class Board {
 			box(board_window, 0, 0);
 		}
 
-		void addEntity(DrawableSet* drawable) {
-			entities.push_back(drawable);
-		}
-
 		void drawEntity(DrawableSet* drawable) {
 			drawEntity(drawable->getX(), drawable->getY(), drawable->getGraphic());
 		}
 
-		void drawEntity(int x, int y, std::vector<std::vector<chtype>> graphic) { 
-			for (int i = 0; i < graphic.size(); i++) {
-				for (int j = 0; j < graphic[0].size(); j++) {
+		void drawEntity(int x, int y, std::vector<std::vector<chtype>> graphic) {
+			for (int i = 0; i < graphic.size(); i++)
+				for (int j = 0; j < graphic[0].size(); j++)
 					mvwaddch(board_window, y + i, x + j, graphic[i][j]);
-				}
-			}
-			std::cout << x << " " << y;
 		}
 
 		chtype getInput() {
@@ -51,13 +44,9 @@ class Board {
 
 		void refresh() {
 			clear();
-			for (int i = 0; i < entities.size(); i++)
-				drawEntity(entities[i]);
+			for (int i = 0; i < entities->size(); i++)
+				drawEntity((*entities)[i]);
 			wrefresh(board_window);
-		}
-
-		std::vector<DrawableSet*> getEntities() {
-			return entities;
 		}
 
 		int getWidth() {
@@ -83,20 +72,21 @@ class Board {
 	private:
 		WINDOW* board_window;
 		int width, height, start_row, start_column, timeout;
-		std::vector<DrawableSet*> entities;
+		std::vector<DrawableSet*>* entities;
 
-		void construct(int width, int height, int timeout) {
+		void construct(int width, int height, std::vector<DrawableSet*>* entity_set, int timeout) {
 			int xMax, yMax;
 			getmaxyx(stdscr, yMax, xMax);
 
-			this -> width = width;
-			this -> height = height;
+			this->width = width;
+			this->height = height;
+			this->entities = entity_set;
 
 			start_row = (yMax / 2) - (height / 2);
 			start_column = (xMax / 2) - (width / 2);
 			board_window = newwin(height, width, start_row, start_column);
 
-			this -> timeout = timeout;
+			this->timeout = timeout;
 			setTimeout(timeout);
 
 			keypad(board_window, true);

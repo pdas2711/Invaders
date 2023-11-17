@@ -1,7 +1,7 @@
 #include <ncurses.h>
 #include "src/invaders.hpp"
 
-const int BOARD_DIM = 45;
+const int BOARD_DIM = 35;
 
 int main() {
 	initscr();

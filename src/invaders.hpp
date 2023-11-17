@@ -3,6 +3,7 @@
 #include "board.hpp"
 #include "scoreboard.hpp"
 #include "player.hpp"
+#include "entityset.hpp"
 
 class Invaders {
 	Board board;
@@ -10,12 +11,13 @@ class Invaders {
 	bool game_over;
 	int score;
 	Player* player;
+	EntitySet entity_set;
 
 	public:
 		Invaders(int dimension) {
 			int height = dimension;
 			int width = int(dimension * 2.5);
-			board = Board(width, height, 50);
+			board = Board(width, height, entity_set.getAllEntities(), 50);
 			int scoreboard_row = board.getStartRow() + height;
 			int scoreboard_column = board.getStartColumn();
 			scoreboard = Scoreboard(scoreboard_row, scoreboard_column, width);
@@ -23,11 +25,11 @@ class Invaders {
 		}
 
 		void initialize(int dimension) {
+			score = 0;
 			board.initialize();
 			scoreboard.initialize(score);
-			score = 0;
 			player = new Player(dimension + 6, dimension - 5, board.getWidth());
-			board.addEntity(player);
+			entity_set.addEntity(player);
 			game_over = false;
 		}
 
@@ -53,7 +55,6 @@ class Invaders {
 			// Update enemy movements
 			// Update projectile movements
 			// Need board.getEntity()
-			std::vector<DrawableSet*> current_entities = board.getEntities();
 		}
 
 		void redraw() {
