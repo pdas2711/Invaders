@@ -4,6 +4,7 @@
 #include "scoreboard.hpp"
 #include "player.hpp"
 #include "entityset.hpp"
+#include "projectile.hpp"
 
 class Invaders {
 	Board board;
@@ -47,7 +48,7 @@ class Invaders {
 				case KEY_UP:
 				case 'w':
 				case ' ': {
-					Projectile* player_attack = new Projectile(player->getX() + 3, player->getY() - 1, board.getHeight());
+					Projectile* player_attack = new Projectile(player->getX() + 3, player->getY() - 1, board.getHeight(), Team::player);
 					entity_set.addEntity(player_attack);
 				}
 					break;
@@ -61,6 +62,10 @@ class Invaders {
 			std::vector<DrawableSet*>* entities = entity_set.getAllEntities();
 			for (int i = 0; i < entity_set.getSize(); i++) {
 				(*entities)[i]->incrementClock();
+				if (((*entities)[i]->getY() == 0) || ((*entities)[i]->getY() == board.getHeight())) {
+					delete (*entities)[i];
+					entities->erase(entities->begin() + i);  // The erase() function only accepts an iterator
+				}
 			}
 		}
 

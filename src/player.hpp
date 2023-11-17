@@ -21,9 +21,9 @@ class Player : public DrawableSet {
 				{'|', '-', '-', '|', '-', '-', '|'},
 				{'|', ' ', ' ', ' ', ' ', ' ', '|'}
 			};
-			speed = 0.111;
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
+			speed = 0.0;
 		}
 
 		Player(int x, int y, int boardWidth) {
@@ -35,9 +35,9 @@ class Player : public DrawableSet {
 				{'|', '-', '-', '|', '-', '-', '|'},
 				{'|', ' ', ' ', ' ', ' ', ' ', '|'}
 			};
-			speed = 0.111;
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
+			speed = 0.0;
 		}
 
 		void moveLeft() {
