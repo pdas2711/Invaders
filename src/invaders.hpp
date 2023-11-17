@@ -72,6 +72,7 @@ class Invaders {
 		void updateState() {
 			if (health <= 0)
 				game_over = true;
+			spawnEnemy();
 			std::vector<DrawableSet*>* entities = entity_set.getAllEntities();
 			for (int i = 0; i < entity_set.getSize(); i++) {
 				if ((*entities)[i] == nullptr)
@@ -80,6 +81,22 @@ class Invaders {
 				if (((*entities)[i]->getY() == 0) || ((*entities)[i]->getY() == board.getHeight())) {
 					delete (*entities)[i];
 					entities->erase(entities->begin() + i);  // The erase() function only accepts an iterator
+				}
+				if ((*entities)[i]->getIdentity() == projectileId_enemy) {
+					int projX = (*entities)[i]->getX();
+					int projY = (*entities)[i]->getY();
+					if (player->isInHitbox(projX, projY))
+						health = health - 1;
+				}
+				if ((*entities)[i]->getIdentity() == projectileId_player) {
+					int projX = (*entities)[i]->getX();
+					int projY = (*entities)[i]->getY();
+					for (int j = 0; i < entity_set.getSize(); j++)
+						if (((*entities)[j]->getIdentity() == enemyId) && ((*entities)[j]->isInHitbox(projX, projY))) {
+							delete (*entities)[j];
+							entities->erase(entities->begin() + j);
+							score = score + 1;
+						}
 				}
 			}
 		}
@@ -95,5 +112,7 @@ class Invaders {
 
 		int getScore() {
 			return score;
+		}
+		void spawnEnemy() {
 		}
 };
