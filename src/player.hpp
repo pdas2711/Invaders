@@ -1,6 +1,5 @@
 #pragma once
 #include "drawableset.hpp"
-#include "projectile.hpp"
 
 /* The player icon set design:
 
@@ -24,6 +23,7 @@ class Player : public DrawableSet {
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
 			speed = 0.0;
+			identity = playerId;
 		}
 
 		Player(int x, int y, int boardWidth) {
@@ -38,6 +38,7 @@ class Player : public DrawableSet {
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
 			speed = 0.0;
+			identity = playerId;
 		}
 
 		void moveLeft() {

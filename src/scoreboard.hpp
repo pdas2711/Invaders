@@ -1,4 +1,5 @@
 #pragma once
+#include <ncurses.h>
 
 class Scoreboard {
 	WINDOW* score_window;
@@ -7,6 +8,8 @@ class Scoreboard {
 		}
 
 		Scoreboard(int row, int column, int width) {
+			this->width = width;
+			height = 1;
 			score_window = newwin(1, width, row, column);
 		}
 
@@ -28,4 +31,12 @@ class Scoreboard {
 		void refresh() {
 			wrefresh(score_window);
 		}
+		int getWidth() {
+			return width;
+		}
+		int getHeight() {
+			return height;
+		}
+	private:
+		int width, height;
 };

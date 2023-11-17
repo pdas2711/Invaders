@@ -2,6 +2,13 @@
 #include <vector>
 #include <ncurses.h>
 
+enum Identifier {
+	playerId,
+	enemyId,
+	projectileId_player,
+	projectileId_enemy
+};
+
 class DrawableSet {
 	public:
 		DrawableSet() {
@@ -11,11 +18,12 @@ class DrawableSet {
 			clock = 0;
 		}
 
-		DrawableSet(int x, int y, int speed, std::vector<std::vector<chtype>> icon_set) {
+		DrawableSet(int x, int y, int speed, std::vector<std::vector<chtype>> icon_set, Identifier identity) {
 			this->x = x;
 			this->y = y;
 			this->speed = speed;
 			this->icon_set = icon_set;
+			this->identity = identity;
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
 			clock = 0;
@@ -43,6 +51,12 @@ class DrawableSet {
 			else
 				return false;
 		}
+		bool isInBounds(int boardWidth, int boardHeight) {
+			if ((x > 0 && x + hitBoxWidth < boardWidth) && (y > 0 && y + hitBoxHeight < boardHeight))
+				return true;
+			else
+				return false;
+		}
 
 		// These 2 methods allow setting a counter for these individual entities
 		int getClock() {
@@ -58,10 +72,14 @@ class DrawableSet {
 			}
 			return clock;
 		}
+		Identifier getIdentity() {
+			return identity;
+		}
 
 	protected:
 		int x, y;
 		double speed;  // 0 to 1
+		Identifier identity;
 		std::vector<std::vector<chtype>> icon_set;
 		int hitBoxWidth, hitBoxHeight;
 		int clock;

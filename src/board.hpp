@@ -1,7 +1,7 @@
 #pragma once
 #include <ncurses.h>
-#include <iostream>
 #include <vector>
+#include <stdlib.h>
 #include "drawableset.hpp"
 
 class Board {
@@ -67,6 +67,11 @@ class Board {
 
 		void setTimeout(int timeout) {
 			wtimeout(board_window, timeout);
+		}
+		void getEmptyCoordinates(int& x) {
+			do {
+				x = rand() % width;
+			} while((mvwinch(board_window, 1, x)) != ' ');
 		}
 
 	private:

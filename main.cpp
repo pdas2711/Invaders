@@ -2,7 +2,7 @@
 #include <iostream>
 #include "src/invaders.hpp"
 
-const int BOARD_DIM = 35;
+const int BOARD_DIM = 30;
 
 int main() {
 	if (BOARD_DIM * 2.5 < 18) {
