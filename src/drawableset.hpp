@@ -36,6 +36,12 @@ class DrawableSet {
 		int getY() {
 			return y;
 		}
+		int getHitBoxWidth() {
+			return hitBoxWidth;
+		}
+		int getHitBoxHeight() {
+			return hitBoxHeight;
+		}
 
 		int getSpeed() {
 			return speed;

@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <iostream>
 #include "src/invaders.hpp"
+#include "src/endscreen.cpp"
 
 const int BOARD_DIM = 30;
 
@@ -23,6 +24,10 @@ int main() {
 		game.updateState();
 		game.redraw();
 	}
+	endwin();
+	showEndScreen(BOARD_DIM, game.getScore());
+	wrefresh(end_screen);
+	getch();
 	
 	endwin();
 	return 0;

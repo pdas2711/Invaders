@@ -84,8 +84,11 @@ class Invaders {
 				if ((*entities)[i]->getIdentity() == projectileId_enemy) {
 					int projX = (*entities)[i]->getX();
 					int projY = (*entities)[i]->getY();
-					if (player->isInHitbox(projX, projY))
+					if (player->isInHitbox(projX, projY)) {
+						delete (*entities)[i];
+						entities->erase(entities->begin() + i);
 						healthboard.decrementHealth(1);
+					}
 				}
 				if ((*entities)[i]->getIdentity() == projectileId_player) {
 					int projX = (*entities)[i]->getX();
@@ -101,6 +104,8 @@ class Invaders {
 						}
 					}
 				}
+				if ((*entities)[i]->getIdentity() == enemyId)
+					enemyAttacks((*entities)[i]->getX(), (*entities)[i]->getY(), (*entities)[i]->getHitBoxWidth(), (*entities)[i]->getHitBoxHeight());
 			}
 		}
 
@@ -118,11 +123,17 @@ class Invaders {
 			return score;
 		}
 		void spawnEnemy() {
-			if (rand() % 80 == 1) {
+			if (rand() % 95 == 1) {
 				int enemyX;
 				board.getEmptyCoordinates(enemyX, board.getWidth());
 				Enemy* new_enemy = new Enemy(enemyX, 1, board.getWidth());
 				entity_set.addEntity(new_enemy);
+			}
+		}
+		void enemyAttacks(int xPos, int yPos, int hitbox_width, int hitbox_height) {
+			if (rand() % 65 == 1) {
+				Projectile* enemy_projectile = new Projectile(xPos + (hitbox_width / 2) + 1, yPos + 1, board.getHeight(), Identifier::projectileId_enemy);
+				entity_set.addEntity(enemy_projectile);
 			}
 		}
 

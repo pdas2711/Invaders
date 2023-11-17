@@ -18,7 +18,7 @@ class Enemy : public DrawableSet {
 			};
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
-			speed = 0.60;
+			speed = 0.05;
 			identity = enemyId;
 		}
 		Enemy(int x, int y, int boardWidth) {
@@ -31,7 +31,7 @@ class Enemy : public DrawableSet {
 			};
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
-			speed = 0.60;
+			speed = 0.05;
 			identity = enemyId;
 		}
 	private:

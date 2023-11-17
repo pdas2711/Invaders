@@ -12,7 +12,7 @@ class Projectile : public DrawableSet {
 			};
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
-			speed = 0.40;
+			speed = 0.90;
 		}
 
 		Projectile(int x, int y, int boardHeight, Identifier identity) {
@@ -24,7 +24,7 @@ class Projectile : public DrawableSet {
 			};
 			hitBoxHeight = icon_set.size();
 			hitBoxWidth = icon_set[0].size();
-			speed = 0.40;
+			speed = 0.90;
 			this->identity = identity;
 		}
 	private:
